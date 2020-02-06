@@ -23,6 +23,6 @@ Android app for referencing NPB player's stats.
 
 ## Author
 
-[tkht7](https://github.com/tkht7)
-[m-mememe](https://github.com/m-mememe)
-[kugenum](https://github.com/kugenum)
+[tkht7](https://github.com/tkht7)  
+[m-mememe](https://github.com/m-mememe)  
+[kugenum](https://github.com/kugenum)  
