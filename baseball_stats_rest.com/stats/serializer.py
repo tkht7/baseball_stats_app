@@ -4,7 +4,9 @@ from .models import Result
 class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Result
-        fields = ('name',
+        fields = ('team',
+                'dominant',
+                'name',
                 'b_num',
                 'point',
                 'hit',

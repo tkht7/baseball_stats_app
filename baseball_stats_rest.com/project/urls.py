@@ -19,7 +19,10 @@ from django.contrib import admin
 from stats.urls import router as s_router
 from django.urls import path
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(s_router.urls)),
 ]
+
+

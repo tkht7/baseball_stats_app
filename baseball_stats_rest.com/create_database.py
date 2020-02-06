@@ -1,42 +1,49 @@
+from stats.models import Result
 import requests
 from bs4 import BeautifulSoup
+import time
 
-from batting_list.models import Result
 
-# クローリング・スクレイピング
-res = requests.get("http://npb.jp/bis/2019/stats/idb1_g.html")
-res.encoding = res.apparent_encoding
-soup = BeautifulSoup(res.content, 'html.parser') # BeautifulSoupの初期化
+# スクレイピング
+team_list = ['l','h','f','b','m','e','c','s','g','db','d','t']
+for team_token in team_list:
+    URL = 'http://npb.jp/bis/2019/stats/idb1_{}.html'.format(team_token)
+    res = requests.get(URL)
+    res.encoding = res.apparent_encoding
+    soup = BeautifulSoup(res.content, 'html.parser') # BeautifulSoupの初期化
+    tags = soup.find_all('tr', class_='ststats')
 
-tags = soup.find_all("tr", class_="ststats")
 
-result_obj = []
-for tag in tags:
-    result = []
-    data = tag.find_all("td")
-    for i in range(len(data)-3): # 打数，塁打，打率，長打率，出塁率を除く
-        if i != 0 and i != 4 and i != 10:
-            result.append(data[i].text.replace("\u3000", ' '))
-    # print(result)
-    b = Result(name=result[0],
-                b_num = result[1],
-                point = result[2],
-                hit = result[3],
-                hit2 = result[4],
-                hit3 = result[5],
-                homerun = result[6],
-                b_point = result[7],
-                steal = result[8],
-                steal_out = result[9],
-                s_hit = result[10],
-                s_fly = result[11],
-                fourball = result[12],
-                intent_four = result[13],
-                deadball = result[14],
-                s_out = result[15],
-                double_out = result[16],
-    )
-    result_obj.append(b)
+    result_obj = []
+    for tag in tags:
+        result = []
+        data = tag.find_all('td')
+        for i in range(len(data)): # 打数，塁打，打率，長打率，出塁率を除く
+            if not(i == 4 or i == 10 or i == 21 or i == 22 or i == 23):
+                result.append(data[i].text.replace('\u3000', ' '))
+        # print(result)
+        b = Result(team = team_token,
+                    dominant = result[0],
+                    name = result[1],
+                    b_num = result[2],
+                    point = result[3],
+                    hit = result[4],
+                    hit2 = result[5],
+                    hit3 = result[6],
+                    homerun = result[7],
+                    b_point = result[8],
+                    steal = result[9],
+                    steal_out = result[10],
+                    s_hit = result[11],
+                    s_fly = result[12],
+                    fourball = result[13],
+                    intent_four = result[14],
+                    deadball = result[15],
+                    s_out = result[16],
+                    double_out = result[17],
+        )
+        result_obj.append(b)
 
-Result.object.bulk_create(result_obj)
-    
+    Result.objects.bulk_create(result_obj)
+
+    time.sleep(1)
