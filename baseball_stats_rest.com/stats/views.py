@@ -1,5 +1,5 @@
 import django_filters
-from rest_framework import viewsets, filters
+from rest_framework import viewsets
 
 from .models import Result
 from .serializer import ResultSerializer
