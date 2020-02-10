@@ -1,12 +1,13 @@
-from .models import Batting, Pitching
+from .models import Batting, Pitching, Fielding
 
 from django.db import models
 import requests
 from bs4 import BeautifulSoup
 import time
 
+
 # スクレイピング（Batting）
-def Create_Batting_Database():
+def create_Batting_Database():
     team_list = ['l','h','f','b','m','e','c','s','g','db','d','t']
     for team_token in team_list:
         URL = 'http://npb.jp/bis/2019/stats/idb1_{}.html'.format(team_token)
@@ -63,7 +64,7 @@ def Create_Batting_Database():
 
 
 # スクレイピング（Pitching）
-def Create_Pitching_Database():
+def create_Pitching_Database():
     team_list = ['l','h','f','b','m','e','c','s','g','db','d','t']
     for team_token in team_list:
         URL = 'http://npb.jp/bis/2019/stats/idp1_{}.html'.format(team_token)
@@ -129,3 +130,70 @@ def Create_Pitching_Database():
         Pitching.objects.bulk_create(pitching_obj)
 
         time.sleep(1)
+
+
+table = {
+    '【一塁手】': '一',
+    '【二塁手】': '二',
+    '【三塁手】': '三',
+    '【遊撃手】': '遊',
+    '【外野手】': '外',
+    '【捕手】': '捕',
+    '【投手】': '投',
+}
+
+# スクレイピング（Fielding）
+def create_Fielding_Database():
+    team_list = ['l','h','f','b','m','e','c','s','g','db','d','t']
+    for team_token in team_list:
+        URL = 'http://npb.jp/bis/2019/stats/idf1_{}.html'.format(team_token)
+        res = requests.get(URL)
+        res.encoding = res.apparent_encoding
+        soup = BeautifulSoup(res.content, 'html.parser') # BeautifulSoupの初期化
+        tags = soup.find_all('tr')
+        fielding_obj = []
+        for tag in tags:
+            print(tag.get_text())
+
+            if tag.find('th', class_='sthdfplayer') != None: # 守備位置をposに入れる
+                pos = tag.find('th', class_='sthdfplayer').get_text()
+            
+            if tag.get('class') != ['ststats']: # 選手データ以外は無視
+                continue
+            
+            result = tag.find_all('td')
+            result = [d.get_text().replace('\u3000', ' ') for d in result]
+            # print(result)
+
+            if result[0] == '*':
+                result[0] = '左'
+            else:
+                result[0] = '右'
+
+            if result[7] == '':
+                result[7] = 0
+
+            position = table[pos]
+            result.append(position)
+            # print(result)
+            
+            team_token = team_token.upper()
+            
+            b = Fielding(team = team_token,
+                         name = result[1],
+                         handed = result[0],
+                         position = result[9],
+                         games = result[2],
+                         put_outs = result[3],
+                         assists = result[4],
+                         errors = result[5],
+                         double_plays = result[6],
+                         passed_balls = result[7],
+            )
+            fielding_obj.append(b)
+        
+        Fielding.objects.bulk_create(fielding_obj)
+
+        time.sleep(1)
+
+        

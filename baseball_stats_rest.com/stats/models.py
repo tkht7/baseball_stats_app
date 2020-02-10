@@ -14,8 +14,8 @@ class Batting(models.Model):
     
     name = models.CharField(max_length=255, verbose_name='名前')
     games = models.IntegerField(verbose_name='試合数')
-    team = models.CharField(max_length=255, verbose_name='チーム', null=True)
-    handed = models.CharField(max_length=2, verbose_name='席', choices=dominant_choice, null=True)
+    team = models.CharField(max_length=255, verbose_name='チーム')
+    handed = models.CharField(max_length=2, verbose_name='席', choices=dominant_choice)
     plate_appearances = models.IntegerField(verbose_name='打席')
     runs = models.IntegerField(verbose_name='得点')    
     hits = models.IntegerField(verbose_name='安打')
@@ -44,8 +44,8 @@ class Pitching(models.Model):
         ('*', '左'),
     )
 
-    team = models.CharField(max_length=255, verbose_name='チーム', null=True)
-    handed = models.CharField(max_length=2, verbose_name='投', choices=dominant_choice, null=True)
+    team = models.CharField(max_length=255, verbose_name='チーム')
+    handed = models.CharField(max_length=2, verbose_name='投', choices=dominant_choice)
     name = models.CharField(max_length=255, verbose_name='名前')
     games = models.IntegerField(verbose_name='登板')
     wins = models.IntegerField(verbose_name='勝利')
@@ -73,14 +73,34 @@ class Pitching(models.Model):
         return self.name
     
 
+# 守備成績
+class Fielding(models.Model):
+    team = models.CharField(max_length=255, verbose_name='チーム')
+    name = models.CharField(max_length=255, verbose_name='名前')
+    handed = models.CharField(max_length=2, verbose_name='投')
+    position = models.CharField(max_length=255, verbose_name='守備位置')
+    games = models.IntegerField(verbose_name='試合')
+    put_outs = models.IntegerField(verbose_name='刺殺')
+    assists = models.IntegerField(verbose_name='補殺')
+    errors = models.IntegerField(verbose_name='失策')
+    double_plays = models.IntegerField(verbose_name='併殺')
+    passed_balls = models.IntegerField(verbose_name='捕逸', null=True, default=0)
+
+    def __str__(self):
+        return self.name
+
+
 # ここに書かないとcircular importになる
-from .create_database import Create_Batting_Database, Create_Pitching_Database
+from .create_database import create_Batting_Database, create_Pitching_Database, create_Fielding_Database
 
 
 # 以下，makemigrations，migrate時にはコメントアウト
 # スクレイピング実行(打者)
-# Create_Batting_Database()
+# create_Batting_Database()
 
 # スクレイピング実行(投手)
-# Create_Pitching_Database()
+# create_Pitching_Database()
+
+# スクレイピング実行(守備)
+# create_Fielding_Database()
 
