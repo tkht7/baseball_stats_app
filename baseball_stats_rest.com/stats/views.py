@@ -1,8 +1,8 @@
 import django_filters
 from rest_framework import viewsets
 
-from .models import Batting, Pitching
-from .serializer import BattingSerializer, PitchingSerializer
+from .models import Batting, Pitching, Fielding
+from .serializer import BattingSerializer, PitchingSerializer, FieldingSerializer
 
 from django.shortcuts import render
 
@@ -15,3 +15,8 @@ class BattingViewSet(viewsets.ModelViewSet):
 class PitchingViewSet(viewsets.ModelViewSet):
     queryset = Pitching.objects.all()
     serializer_class = PitchingSerializer
+
+
+class FieldingViewSet(viewsets.ModelViewSet):
+    queryset = Fielding.objects.all()
+    serializer_class = FieldingSerializer
