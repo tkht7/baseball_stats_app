@@ -1,6 +1,12 @@
 from django.contrib import admin
-from .models import Result
+from .models import Batting, Pitching
 
-@admin.register(Result)
-class ResultAdmin(admin.ModelAdmin):
+
+@admin.register(Batting)
+class BattingAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Pitching)
+class PitchingAdmin(admin.ModelAdmin):
     pass

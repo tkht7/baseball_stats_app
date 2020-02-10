@@ -1,6 +1,7 @@
 from rest_framework import routers
-from .views import ResultViewSet
+from .views import BattingViewSet, PitchingViewSet
 
 
 router = routers.DefaultRouter()
-router.register(r'result', ResultViewSet)
+router.register(r'batting', BattingViewSet)
+router.register(r'pitching', PitchingViewSet)
