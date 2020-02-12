@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">NpbStatsRef</string>
+    <string name="pa_league">パ・リーグ</string>
+    <string name="se_league">セ・リーグ</string>
+
+    <string name="giants">読売ジャイアンツ</string>
+    <string name="baystars">横浜DeNAベイスターズ</string>
+    <string name="tigers">阪神タイガース</string>
+    <string name="carp">広島東洋カープ</string>
+    <string name="dragons">中日ドラゴンズ</string>
+    <string name="swallows">東京ヤクルトスワローズ</string>
+
+    <string name="lions">埼玉西武ライオンズ</string>
+    <string name="hawks">ソフトバンクホークス</string>
+    <string name="eagles">東北楽天ゴールデンイーグルス</string>
+    <string name="marines">千葉ロッテマリーンズ</string>
+    <string name="fighters">北海道日本ハムファイターズ</string>
+    <string name="buffaloes">オリックス・バファローズ</string>
 </resources>
