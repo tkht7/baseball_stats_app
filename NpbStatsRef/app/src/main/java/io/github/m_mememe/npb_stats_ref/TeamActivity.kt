@@ -3,6 +3,7 @@ package io.github.m_mememe.npb_stats_ref
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import com.eclipsesource.json.Json
 import kotlinx.coroutines.Dispatchers
@@ -11,11 +12,11 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.BufferedReader
 
 class TeamActivity : AppCompatActivity() {
-    val URL = "http://weather.livedoor.com/forecast/webservice/json/v1?city=400040" //サンプル:ライブドアのお天気Webサービス
-//    val URL = "http://10.0.2.2:8000/api/batting/?format=json" //ローカルホストを叩いてみる
-    var result = ""
+//    val URL = "http://weather.livedoor.com/forecast/webservice/json/v1?city=400040" //サンプル:ライブドアのお天気Webサービス
+    val URL = "http://10.0.2.2:8000/api/batting/" //ローカルホストを叩いてみる
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +39,11 @@ class TeamActivity : AppCompatActivity() {
             //minimal-jsonを使って　jsonをパース
             val result = Json.parse(it).asObject()
             val textView = findViewById(R.id.textView) as TextView
-            textView.setText(result.get("description").asObject().get("text").asString())
 
-//            textView.setText(JSONObject(it).toString())
+            val result2 = result.get("results").asArray()
+            val result3 = result2[0].asObject()
+            val result4 = result3.get("name").asString()
+            textView.setText(result4)
 
         }
     }
