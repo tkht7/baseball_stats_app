@@ -29,9 +29,9 @@ class LeagueAdapter(context: Context, itemId: Int, logo: List<Int>, league: List
         val view = convertView ?: inflater.inflate(layoutId, null)
 
         holder.logo = view.findViewById(R.id.ivLogo)
-        holder.league = view.findViewById(R.id.tvTeam)
+        holder.team = view.findViewById(R.id.tvTeam)
         holder.logo.setImageBitmap(logoList[position])
-        holder.league.text = leagueList[position]
+        holder.team.text = leagueList[position]
         view.tag = holder
         return view
     }
@@ -50,6 +50,6 @@ class LeagueAdapter(context: Context, itemId: Int, logo: List<Int>, league: List
 
     private inner class ViewHolder {
         lateinit var logo: ImageView
-        lateinit var league: TextView
+        lateinit var team: TextView
     }
 }

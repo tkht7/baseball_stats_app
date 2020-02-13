@@ -10,6 +10,14 @@ import android.widget.ListView
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
+    private val paLogo = listOf(
+        R.drawable.lions,
+        R.drawable.hawks,
+        R.drawable.eagles,
+        R.drawable.marines,
+        R.drawable.fighters,
+        R.drawable.buffaloes
+    )
     private val seLogo = listOf(
         R.drawable.giants,
         R.drawable.baystars,
@@ -18,13 +26,13 @@ class MainActivity : AppCompatActivity() {
         R.drawable.dragons,
         R.drawable.swallows
     )
-    private val paLogo = listOf(
-        R.drawable.baystars,
-        R.drawable.baystars,
-        R.drawable.baystars,
-        R.drawable.baystars,
-        R.drawable.baystars,
-        R.drawable.baystars
+    private val paLeague = listOf(
+        R.string.lions,
+        R.string.hawks,
+        R.string.eagles,
+        R.string.marines,
+        R.string.fighters,
+        R.string.buffaloes
     )
     private val seLeague = listOf(
         R.string.giants,
@@ -33,14 +41,6 @@ class MainActivity : AppCompatActivity() {
         R.string.carp,
         R.string.dragons,
         R.string.swallows
-    )
-    private val paLeague = listOf(
-        R.string.lions,
-        R.string.hawks,
-        R.string.eagles,
-        R.string.marines,
-        R.string.fighters,
-        R.string.buffaloes
     )
     val leagueId = paLeague.plus(seLeague)
 
