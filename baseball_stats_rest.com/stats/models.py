@@ -4,6 +4,21 @@ from bs4 import BeautifulSoup
 import time
 
 
+team_choice = (
+    ('L', '埼玉西武ライオンズ'),
+    ('H', '福岡ソフトバンクホークス'),
+    ('E', '東北楽天ゴールデンイーグルス'),
+    ('M', '千葉ロッテマリーンズ'),
+    ('F', '北海道日本ハムファイターズ'),
+    ('B', 'オリックス・バファローズ'),
+    ('G', '読売ジャイアンツ'),
+    ('DB', '横浜DeNAベイスターズ'),
+    ('T', '阪神タイガース'),
+    ('C', '広島東洋カープ'),
+    ('D', '中日ドラゴンズ'),
+    ('S', '東京ヤクルトスワローズ'),
+)
+
 # 打者成績
 class Batting(models.Model):
     dominant_choice = (
@@ -14,7 +29,7 @@ class Batting(models.Model):
     
     name = models.CharField(max_length=255, verbose_name='名前')
     games = models.IntegerField(verbose_name='試合数')
-    team = models.CharField(max_length=255, verbose_name='チーム')
+    team = models.CharField(max_length=255, verbose_name='チーム', choices=team_choice)
     handed = models.CharField(max_length=2, verbose_name='席', choices=dominant_choice)
     plate_appearances = models.IntegerField(verbose_name='打席')
     runs = models.IntegerField(verbose_name='得点')    
@@ -33,6 +48,7 @@ class Batting(models.Model):
     strike_outs = models.IntegerField(verbose_name='三振')
     double_plays = models.IntegerField(verbose_name='併殺打')
 
+    
     def __str__(self):
         return self.name
 
@@ -44,7 +60,7 @@ class Pitching(models.Model):
         ('*', '左'),
     )
 
-    team = models.CharField(max_length=255, verbose_name='チーム')
+    team = models.CharField(max_length=255, verbose_name='チーム', choices=team_choice)
     handed = models.CharField(max_length=2, verbose_name='投', choices=dominant_choice)
     name = models.CharField(max_length=255, verbose_name='名前')
     games = models.IntegerField(verbose_name='登板')
@@ -69,15 +85,21 @@ class Pitching(models.Model):
     runs = models.IntegerField(verbose_name='失点')
     earned_runs = models.IntegerField(verbose_name='自責点')
 
+
     def __str__(self):
         return self.name
     
 
 # 守備成績
 class Fielding(models.Model):
-    team = models.CharField(max_length=255, verbose_name='チーム')
+    dominant_choice = (
+    ('', '右'),
+    ('*', '左'),
+    )
+
+    team = models.CharField(max_length=255, verbose_name='チーム', choices=team_choice)
     name = models.CharField(max_length=255, verbose_name='名前')
-    handed = models.CharField(max_length=2, verbose_name='投')
+    handed = models.CharField(max_length=2, verbose_name='投', choices=dominant_choice)
     position = models.CharField(max_length=255, verbose_name='守備位置')
     games = models.IntegerField(verbose_name='試合')
     put_outs = models.IntegerField(verbose_name='刺殺')
@@ -85,6 +107,7 @@ class Fielding(models.Model):
     errors = models.IntegerField(verbose_name='失策')
     double_plays = models.IntegerField(verbose_name='併殺')
     passed_balls = models.IntegerField(verbose_name='捕逸', null=True, default=0)
+
 
     def __str__(self):
         return self.name

@@ -27,7 +27,7 @@ class TeamActivity : AppCompatActivity() {
         setContentView(R.layout.activity_team)
 
         val intent: Intent = getIntent()
-        val teamName: String = intent.getStringExtra("buttonText")
+        val teamName: String? = intent.getStringExtra("buttonText")
         val textView: TextView = findViewById(R.id.teamName)
         textView.setText(teamName)
 
