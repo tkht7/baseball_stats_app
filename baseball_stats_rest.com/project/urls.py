@@ -15,9 +15,9 @@ Including another URLconf
 """
 # from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import path, include
 
 from stats.urls import router as s_router
-from django.urls import path, include
 
 
 urlpatterns = [
