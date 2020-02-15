@@ -1,95 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".TeamActivity">
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:paddingVertical="20dp"
+    card_view:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
-            app:srcCompat="@mipmap/ic_launcher" />
-
-        <TextView
-            android:id="@+id/teamName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:gravity="center"
-            android:textSize="24sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/nameTextView"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:paddingHorizontal="8dp"
             android:paddingVertical="16dp"
-            android:text="選手"
             android:textSize="18dp" />
 
         <TextView
+            android:id="@+id/TextView1"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingHorizontal="8dp"
-            android:text="試合"
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/TextView2"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingHorizontal="8dp"
-            android:text="打席"
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/TextView3"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingHorizontal="8dp"
-            android:text="得点"
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/TextView4"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingHorizontal="8dp"
-            android:text="安打"
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/TextView5"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingHorizontal="8dp"
-            android:text="本塁打"
             android:textSize="18sp" />
 
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>
