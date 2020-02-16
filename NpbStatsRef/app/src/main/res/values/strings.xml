@@ -16,4 +16,11 @@
     <string name="marines">千葉ロッテマリーンズ</string>
     <string name="fighters">北海道日本ハムファイターズ</string>
     <string name="buffaloes">オリックス・バファローズ</string>
+
+    <string-array name="statsType">
+        <item>打撃</item>
+        <item>投球</item>
+        <item>守備</item>
+    </string-array>
+
 </resources>
