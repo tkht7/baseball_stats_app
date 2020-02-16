@@ -15,11 +15,11 @@ class RecyclerAdapter(private val list:List<RowData>, private val listener: List
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         holder.nameTextView.text = list[position].name
-        holder.textView1.text = list[position].data1
-        holder.textView2.text = list[position].data2
-        holder.textView3.text = list[position].data3
-        holder.textView4.text = list[position].data4
-        holder.textView5.text = list[position].data5
+        holder.textView1.text = list[position].handed
+        holder.textView2.text = list[position].battingAverage
+        holder.textView3.text = list[position].homeruns
+        holder.textView4.text = list[position].runsBattedIn
+        holder.textView5.text = list[position].OPS
         holder.itemView.setOnClickListener {
             listener.onClickData(it, list[position])
         }

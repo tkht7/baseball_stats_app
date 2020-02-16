@@ -10,15 +10,18 @@ import android.widget.ListView
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
-    private val paLogo = listOf(
+    val paNum = 6
+    val seNum = 6
+
+    val leagueLogo = listOf(
+        // パ・リーグ
         R.drawable.lions,
         R.drawable.hawks,
         R.drawable.eagles,
         R.drawable.marines,
         R.drawable.fighters,
-        R.drawable.buffaloes
-    )
-    private val seLogo = listOf(
+        R.drawable.buffaloes,
+        // セ・リーグ
         R.drawable.giants,
         R.drawable.baystars,
         R.drawable.tigers,
@@ -26,15 +29,16 @@ class MainActivity : AppCompatActivity() {
         R.drawable.dragons,
         R.drawable.swallows
     )
-    private val paLeague = listOf(
+
+    val leagueId = listOf(
+        // パ・リーグ
         R.string.lions,
         R.string.hawks,
         R.string.eagles,
         R.string.marines,
         R.string.fighters,
-        R.string.buffaloes
-    )
-    private val seLeague = listOf(
+        R.string.buffaloes,
+        // セ・リーグ
         R.string.giants,
         R.string.baystars,
         R.string.tigers,
@@ -42,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         R.string.dragons,
         R.string.swallows
     )
-    val leagueId = paLeague.plus(seLeague)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,52 +53,34 @@ class MainActivity : AppCompatActivity() {
 
         //セとパそれぞれでListViewを作成する
         val lvPaLeague = findViewById<ListView>(R.id.lvPaLeague)
-        val adapterPa = LeagueAdapter(this, R.layout.list_league, paLogo, paLeague)
+        val adapterPa = LeagueAdapter(this, R.layout.list_league, leagueLogo.subList(0, paNum), leagueId.subList(0, paNum))
         val headerPa = layoutInflater.inflate(R.layout.header_league, null)
         val headerPaText = headerPa.findViewById<TextView>(R.id.tvLeague)
         headerPa.setBackgroundColor(Color.RED)
         headerPaText.text = getString(R.string.pa_league)
         lvPaLeague.addHeaderView(headerPa, null, false)
         lvPaLeague.adapter = adapterPa
-        lvPaLeague.onItemClickListener = ListItemClickListenerPa()
+        lvPaLeague.onItemClickListener = ListItemClickListener()
 
         val lvSeLeague = findViewById<ListView>(R.id.lvSeLeague)
-        val adapterSe = LeagueAdapter(this, R.layout.list_league, seLogo, seLeague)
+        val adapterSe = LeagueAdapter(this, R.layout.list_league, leagueLogo.subList(paNum, paNum+seNum), leagueId.subList(paNum, paNum+seNum))
         val headerSe = layoutInflater.inflate(R.layout.header_league, null)
         val headerSeText = headerSe.findViewById<TextView>(R.id.tvLeague)
         headerSe.setBackgroundColor(Color.BLUE)
         headerSeText.text = getString(R.string.se_league)
         lvSeLeague.addHeaderView(headerSe, null, false)
         lvSeLeague.adapter = adapterSe
-        lvSeLeague.onItemClickListener = ListItemClickListenerSe()
+        lvSeLeague.onItemClickListener = ListItemClickListener(paNum)
     }
 
-    private inner class ListItemClickListenerPa: AdapterView.OnItemClickListener{
+    private inner class ListItemClickListener(bias: Int = 0): AdapterView.OnItemClickListener{
+        var cBias = bias
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            val intent = Intent(applicationContext, TeamDetailActivity::class.java)
+            val intent = Intent(this@MainActivity, TeamActivity::class.java)
             //positionは1から帰ってくるので"-1"する
-            val selectedText = paLeague[position - 1]
+            val selectedText = leagueId[position + cBias - 1]
             intent.putExtra("teamName", selectedText)
             startActivity(intent)
         }
-    }
-
-    //ListItemClickListenerPaとほぼ同じ、paLeagueがseLeagueになっただけ
-    private inner class ListItemClickListenerSe: AdapterView.OnItemClickListener{
-        override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            val intent = Intent(applicationContext, TeamDetailActivity::class.java)
-            //positionは1から帰ってくるので"-1"する
-            val selectedText = seLeague[position - 1]
-            intent.putExtra("teamName", selectedText)
-            startActivity(intent)
-        }
-    }
-
-    fun teamPageTransition(view: View){
-        val intent: Intent = Intent(this@MainActivity, TeamActivity::class.java)
-        val button: Button = findViewById(view.id) as Button
-        val teamName: String = button.text.toString()
-        intent.putExtra("buttonText", teamName)
-        startActivity(intent)
     }
 }

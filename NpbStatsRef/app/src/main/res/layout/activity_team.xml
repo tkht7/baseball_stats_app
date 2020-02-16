@@ -10,37 +10,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
-            app:srcCompat="@mipmap/ic_launcher" />
+            android:id="@+id/teamLogo"
+            android:layout_width="72dp"
+            android:layout_height="72dp" />
 
         <TextView
             android:id="@+id/teamName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:gravity="center"
-            android:textSize="24sp" />
+            android:gravity="center_vertical"
+            android:textSize="22dp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:paddingHorizontal="4dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="8dp"
+            android:paddingHorizontal="6dp"
             android:paddingVertical="16dp"
             android:text="選手"
             android:textSize="18dp" />
@@ -48,41 +46,46 @@
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="8dp"
-            android:text="試合"
+            android:paddingHorizontal="6dp"
+            android:text="左\n右"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="8dp"
-            android:text="打席"
+            android:paddingHorizontal="6dp"
+            android:text="打\n率"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="8dp"
-            android:text="得点"
+            android:paddingHorizontal="6dp"
+            android:text="本\n塁\n打"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="8dp"
-            android:text="安打"
+            android:paddingHorizontal="6dp"
+            android:text="打\n点"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="8dp"
-            android:text="本塁打"
+            android:paddingHorizontal="6dp"
+            android:text="O\nP\nS"
             android:textSize="18sp" />
 
     </LinearLayout>
