@@ -117,7 +117,11 @@ class Fielding(models.Model):
 from .create_database import create_Batting_Database, create_Pitching_Database, create_Fielding_Database
 
 
-# 以下，makemigrations，migrate時にはコメントアウト
+'''
+以下，makemigrations，migrate時にはコメントアウト
+runserverの際は以下が三回ずつ実行されてしまう
+読み込まれるviewの数だけmodels.pyも実行される？
+'''
 # スクレイピング実行(打者)
 # create_Batting_Database()
 

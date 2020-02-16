@@ -8,6 +8,9 @@ import time
 
 # スクレイピング（Batting）
 def create_Batting_Database():
+    # 初期化
+    if len(Batting.objects.all()) != 0:
+            Batting.objects.all().delete()
     team_list = ['l','h','f','b','m','e','c','s','g','db','d','t']
     for team_token in team_list:
         URL = 'http://npb.jp/bis/2019/stats/idb1_{}.html'.format(team_token)
@@ -65,6 +68,9 @@ def create_Batting_Database():
 
 # スクレイピング（Pitching）
 def create_Pitching_Database():
+    # 初期化
+    if len(Pitching.objects.all()) != 0:
+            Pitching.objects.all().delete()
     team_list = ['l','h','f','b','m','e','c','s','g','db','d','t']
     for team_token in team_list:
         URL = 'http://npb.jp/bis/2019/stats/idp1_{}.html'.format(team_token)
@@ -144,6 +150,9 @@ table = {
 
 # スクレイピング（Fielding）
 def create_Fielding_Database():
+    # 初期化
+    if len(Fielding.objects.all()) != 0:
+            Fielding.objects.all().delete()
     team_list = ['l','h','f','b','m','e','c','s','g','db','d','t']
     for team_token in team_list:
         URL = 'http://npb.jp/bis/2019/stats/idf1_{}.html'.format(team_token)
@@ -153,7 +162,7 @@ def create_Fielding_Database():
         tags = soup.find_all('tr')
         fielding_obj = []
         for tag in tags:
-            print(tag.get_text())
+            # print(tag.get_text())
 
             if tag.find('th', class_='sthdfplayer') != None: # 守備位置をposに入れる
                 pos = tag.find('th', class_='sthdfplayer').get_text()
@@ -195,5 +204,3 @@ def create_Fielding_Database():
         Fielding.objects.bulk_create(fielding_obj)
 
         time.sleep(1)
-
-        
