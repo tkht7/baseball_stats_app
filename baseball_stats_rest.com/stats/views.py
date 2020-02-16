@@ -1,5 +1,5 @@
 import django_filters
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 
 from .models import Batting, Pitching, Fielding
 from .serializer import BattingSerializer, PitchingSerializer, FieldingSerializer
