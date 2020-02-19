@@ -17,56 +17,65 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="6dp"
+            android:paddingHorizontal="4dp"
             android:paddingVertical="16dp"
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/handed"
+            android:id="@+id/data1"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="6dp"
-            android:textSize="18sp" />
+            android:paddingHorizontal="4dp"
+            android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/battingAverage"
+            android:id="@+id/data2"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="6dp"
-            android:textSize="18sp" />
+            android:paddingHorizontal="4dp"
+            android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/homeruns"
+            android:id="@+id/data3"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="6dp"
-            android:textSize="18sp" />
+            android:paddingHorizontal="4dp"
+            android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/runsBattedIn"
+            android:id="@+id/data4"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="6dp"
-            android:textSize="18sp" />
+            android:paddingHorizontal="4dp"
+            android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/OPS"
+            android:id="@+id/data5"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="6dp"
-            android:textSize="18sp" />
+            android:paddingHorizontal="4dp"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/data6"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="4dp"
+            android:textSize="16dp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
