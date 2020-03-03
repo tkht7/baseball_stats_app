@@ -4,83 +4,56 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
-    val paNum = 6
-    val seNum = 6
 
-    val leagueLogo = listOf(
-        // パ・リーグ
-        R.drawable.lions,
-        R.drawable.hawks,
-        R.drawable.eagles,
-        R.drawable.marines,
-        R.drawable.fighters,
-        R.drawable.buffaloes,
-        // セ・リーグ
-        R.drawable.giants,
-        R.drawable.baystars,
-        R.drawable.tigers,
-        R.drawable.carp,
-        R.drawable.dragons,
-        R.drawable.swallows
-    )
-
-    val leagueId = listOf(
-        // パ・リーグ
-        R.string.lions,
-        R.string.hawks,
-        R.string.eagles,
-        R.string.marines,
-        R.string.fighters,
-        R.string.buffaloes,
-        // セ・リーグ
-        R.string.giants,
-        R.string.baystars,
-        R.string.tigers,
-        R.string.carp,
-        R.string.dragons,
-        R.string.swallows
-    )
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //セとパそれぞれでListViewを作成する
-        val lvPaLeague = findViewById<ListView>(R.id.lvPaLeague)
-        val adapterPa = LeagueAdapter(this, R.layout.list_league, leagueLogo.subList(0, paNum), leagueId.subList(0, paNum))
-        val headerPa = layoutInflater.inflate(R.layout.header_league, null)
-        val headerPaText = headerPa.findViewById<TextView>(R.id.tvLeague)
-        headerPa.setBackgroundColor(Color.RED)
-        headerPaText.text = getString(R.string.pa_league)
-        lvPaLeague.addHeaderView(headerPa, null, false)
-        lvPaLeague.adapter = adapterPa
-        lvPaLeague.onItemClickListener = ListItemClickListener()
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        val lvSeLeague = findViewById<ListView>(R.id.lvSeLeague)
-        val adapterSe = LeagueAdapter(this, R.layout.list_league, leagueLogo.subList(paNum, paNum+seNum), leagueId.subList(paNum, paNum+seNum))
-        val headerSe = layoutInflater.inflate(R.layout.header_league, null)
-        val headerSeText = headerSe.findViewById<TextView>(R.id.tvLeague)
-        headerSe.setBackgroundColor(Color.BLUE)
-        headerSeText.text = getString(R.string.se_league)
-        lvSeLeague.addHeaderView(headerSe, null, false)
-        lvSeLeague.adapter = adapterSe
-        lvSeLeague.onItemClickListener = ListItemClickListener(paNum)
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navController = findNavController(R.id.nav_host_fragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_team
+            ), drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
-    private inner class ListItemClickListener(bias: Int = 0): AdapterView.OnItemClickListener{
-        var cBias = bias
-        override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            val intent = Intent(this@MainActivity, TeamActivity::class.java)
-            //positionは1から帰ってくるので"-1"する
-            val selectedText = leagueId[position + cBias - 1]
-            intent.putExtra("teamName", selectedText)
-            startActivity(intent)
-        }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

@@ -17,10 +17,15 @@
     <string name="fighters">北海道日本ハムファイターズ</string>
     <string name="buffaloes">オリックス・バファローズ</string>
 
-    <string-array name="statsType">
-        <item>打撃</item>
-        <item>投球</item>
-        <item>守備</item>
-    </string-array>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- それぞれのフラグメントにおいてアプリの上の方に表示される文字-->
+    <string name="menu_top">Top</string>
+    <string name="menu_team">Team</string>
 
 </resources>

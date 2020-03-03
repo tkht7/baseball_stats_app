@@ -10,17 +10,17 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 
-class LeagueAdapter(context: Context, itemId: Int, logo: List<Int>, league: List<Int>) : BaseAdapter(){
+class LeagueAdapter(context: Context?, itemId: Int, logo: List<Int>, league: List<Int>) : BaseAdapter(){
     private val inflater = LayoutInflater.from(context)
     private val layoutId = itemId
     private val logoList = arrayOfNulls<Bitmap>(logo.size)
     private val leagueList = arrayOfNulls<String>(league.size)
     init{
         for(i in logoList.indices){
-            logoList[i] = BitmapFactory.decodeResource(context.resources, logo[i])
+            logoList[i] = BitmapFactory.decodeResource(context?.resources, logo[i])
         }
         for(i in leagueList.indices){
-            leagueList[i] = context.getString(league[i])
+            leagueList[i] = context?.getString(league[i])
         }
     }
 

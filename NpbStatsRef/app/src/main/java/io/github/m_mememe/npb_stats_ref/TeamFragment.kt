@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eclipsesource.json.Json
@@ -18,25 +21,40 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class TeamFragment : Fragment() {
-    //private lateinit var recyclerView: RecyclerView
+    // 画面遷移時の引数受け取り
+    private val args: TeamFragmentArgs by navArgs()
+
+    private val leagueId = MainFragment().leagueId
+    private val leagueLogo = MainFragment().leagueLogo
+    private val teamList = listOf<String>(
+        "L",        //西武ライオンズ
+        "H",        //ソフトバンク
+        "E",       //楽天
+        "M",      //千葉ロッテ
+        "F",     //日本ハム
+        "B",    //オリックス
+        "G",       //ジャイアンツ
+        "DB",     //DeNA
+        "T",       //阪神
+        "C",         //カープ
+        "D",      //中日
+        "S"      //ヤクルト
+    )
+    private val statsTypeList = listOf(
+        "batting",
+        "pitching",
+        "fielding"
+    )
+    private val statsTypeList2 = listOf(
+        "打撃成績",
+        "投手成績",
+        "守備成績"
+    )
+
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-
-    private var param1: String? = null
-    private var param2: String? = null
-    private var rootview: View? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +66,59 @@ class TeamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // チーム名をセット
+        var teamIndex = teamList.indexOf(args.teamId)
+        val textView: TextView = view.findViewById(R.id.teamName)
+        textView.setText(leagueId[teamIndex])
+
+        // チームロゴをセット
+        val imageView: ImageView = view.findViewById(R.id.teamLogo)
+        imageView.setImageDrawable(getDrawable(view.context, leagueLogo[teamIndex]))
+
+        // spinner(打・投・守の項目)
+        val statsTypeSpinner: Spinner = view.findViewById(R.id.statsTypeSpinner)
+        val statsTypeAdapter = ArrayAdapter(
+            view.context,
+            android.R.layout.simple_spinner_item,
+            statsTypeList2
+        )
+        statsTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        statsTypeSpinner.adapter = statsTypeAdapter
+
+        // spinner変更でfragment遷移するのでspinnerの中身をここでセット
+        val statsIndex = statsTypeList.indexOf(args.statsType)
+        statsTypeSpinner.setSelection(statsIndex)
+
+        // spinnerの項目選択時呼び出し
+        statsTypeSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                // 初回起動時の動作を抑制して無限呼び出しを防ぐ
+                if (statsTypeSpinner.isFocusable() == false) {
+                    statsTypeSpinner.setFocusable(true)
+                    return
+                }
+
+                // 選んだ位置のインデックス
+                var statsTypeIndex = position
+
+                // フラグメント遷移
+                val action = TeamFragmentDirections.actionNavTeamToNavTeam(args.teamId, statsTypeList[statsTypeIndex])
+                findNavController().navigate(action)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // 選ばなかった時の動作
+            }
+        }
+
+        // 初回起動時の動作を抑制して無限呼び出しを防ぐ
+        statsTypeSpinner.setFocusable(false)
+
         val dataItem1: TextView = view.findViewById(R.id.dataItem1)
         val dataItem2: TextView = view.findViewById(R.id.dataItem2)
         val dataItem3: TextView = view.findViewById(R.id.dataItem3)
@@ -56,21 +127,21 @@ class TeamFragment : Fragment() {
         val dataItem6: TextView = view.findViewById(R.id.dataItem6)
 
         dataItem1.setText("試\n合\n数")
-        if(param2 == "batting"){
+        if(args.statsType == "batting"){
             dataItem2.setText("左\n右")
             dataItem3.setText("打\n率")
             dataItem4.setText("本\n塁\n打")
             dataItem5.setText("打\n点")
             dataItem6.setText("O\nP\nS")
         }
-        else if(param2 == "pitching"){
+        else if(args.statsType == "pitching"){
             dataItem2.setText("左\n右")
             dataItem3.setText("防\n御\n率")
             dataItem4.setText("勝\n利")
             dataItem5.setText("敗\n北")
             dataItem6.setText("投\n球\n回")
         }
-        else if(param2 == "fielding"){
+        else if(args.statsType == "fielding"){
             dataItem2.setText("守\n備\n位\n置")
             dataItem3.setText("失\n策")
             dataItem4.setText("守\n備\n率")
@@ -79,19 +150,7 @@ class TeamFragment : Fragment() {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        onParallelGetInfo(param1, param2, recyclerView)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String): TeamFragment {
-            val teamFlagment = TeamFragment()
-            val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
-            teamFlagment.arguments = args
-            return teamFlagment
-        }
+        onParallelGetInfo(args.teamId, args.statsType, recyclerView)
     }
 
     fun onClickData(tappedView: View, rowData: RowData) {
