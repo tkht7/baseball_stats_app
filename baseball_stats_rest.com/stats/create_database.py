@@ -36,6 +36,49 @@ def create_Batting_Database():
                 result[0] = '右'
             
             team_token = team_token.upper()
+            # 文字列を整数に
+            result[14] = int(result[14])
+            result[15] = int(result[15])
+            result[16] = int(result[16])
+            result[3] = int(result[3])
+            result[12] = int(result[12])
+            result[13] = int(result[13])
+            result[5] = int(result[5])
+            result[6] = int(result[6])
+            result[7] = int(result[7])
+            result[8] = int(result[8])
+            result[10] = int(result[10])
+            result[11] = int(result[11])
+
+            # 四死球 
+            walks = result[14] + result[16]
+            # 打数
+            at_bats = result[3] - walks - result[12] - result[13]
+            # 打率
+            if at_bats != 0:
+                batting_average = result[5] / at_bats
+            else:
+                batting_average = 0
+
+            # 出塁率
+            if at_bats + walks + result[13] != 0:
+                on_base_percentage = (result[5] + walks) / (at_bats + walks + result[13])
+            else:
+                on_base_percentage = 0
+            # 単打
+            single = result[5] - result[6] - result[7] - result[8]
+            # 長打率
+            if at_bats != 0:
+                slugging_percentage = (single + 2*result[6] + 3*result[7] + 4*result[8]) / at_bats
+            else:
+                slugging_percentage = 0
+            # OPS
+            ops = on_base_percentage + slugging_percentage
+            # 盗塁成功率
+            if result[10] + result[11] != 0:
+                stolen_bases_percentage = result[10] / (result[10] + result[11])
+            else:
+                stolen_bases_percentage = 0
 
             # print(result)
             b = Batting(team = team_token,
@@ -58,6 +101,13 @@ def create_Batting_Database():
                         hits_by_pitch = result[16],
                         strike_outs = result[17],
                         double_plays = result[18],
+                        at_bats = at_bats,
+                        batting_average = batting_average,
+                        on_base_percentage = on_base_percentage,
+                        slugging_percentage = slugging_percentage,
+                        ops = ops,
+                        stolen_bases_percentage = stolen_bases_percentage,
+                        year = 2019,
             )
             batting_obj.append(b)
 
@@ -105,6 +155,24 @@ def create_Pitching_Database():
 
             team_token = team_token.upper()
 
+            result[12] = int(result[12])
+            result[23] = int(result[23])
+            result[3] = int(result[3])
+            result[4] = int(result[4])
+
+            # イニング
+            innings = result[12] // 3 + (result[12] % 3) * 0.1
+            # 防御率
+            if result[12] != 0:
+                earned_run_average = result[23] * 27 / result[12]
+            else:
+                earned_run_average = 0
+            # 勝率
+            if result[3] + result[4] != 0:
+                winning_percentage = result[3] / (result[3] + result[4])
+            else:
+                winning_percentage = 0
+
             # print(result)
             b = Pitching(team = team_token,
                         handed = result[0],
@@ -130,6 +198,10 @@ def create_Pitching_Database():
                         balks = result[21],
                         runs = result[22],
                         earned_runs = result[23],
+                        innings = innings,
+                        earned_run_average = earned_run_average,
+                        winning_percentage = winning_percentage,
+                        year = 2019
             )
             pitching_obj.append(b)
 
@@ -188,6 +260,16 @@ def create_Fielding_Database():
             
             team_token = team_token.upper()
             
+            result[3] = int(result[3])
+            result[4] = int(result[4])
+            result[5] = int(result[5])
+            
+            # 守備率
+            if result[3] + result[4] + result[5] != 0:
+                fielding_average = (result[3] + result[4]) / (result[3] + result[4] + result[5])
+            else:
+                fielding_average = 0
+            
             b = Fielding(team = team_token,
                          name = result[1],
                          handed = result[0],
@@ -198,6 +280,8 @@ def create_Fielding_Database():
                          errors = result[5],
                          double_plays = result[6],
                          passed_balls = result[7],
+                         fielding_average = fielding_average,
+                         year = 2019,
             )
             fielding_obj.append(b)
         

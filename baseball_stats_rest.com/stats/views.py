@@ -10,16 +10,16 @@ from django.shortcuts import render
 class BattingViewSet(viewsets.ModelViewSet):
     queryset = Batting.objects.all()
     serializer_class = BattingSerializer
-    filter_fields = ('team',)
+    filter_fields = ('team', 'name')
 
 
 class PitchingViewSet(viewsets.ModelViewSet):
     queryset = Pitching.objects.all()
     serializer_class = PitchingSerializer
-    filter_fields = ('team',)
+    filter_fields = ('team', 'name')
 
 
 class FieldingViewSet(viewsets.ModelViewSet):
     queryset = Fielding.objects.all()
     serializer_class = FieldingSerializer
-    filter_fields = ('team',)
+    filter_fields = ('team', 'name')
