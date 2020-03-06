@@ -1,3 +1,4 @@
 .vscode/
 db.sqlite3
 stats/__pycache__/
+project/__pycache__/

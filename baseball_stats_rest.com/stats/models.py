@@ -32,6 +32,7 @@ class Batting(models.Model):
     team = models.CharField(max_length=255, verbose_name='チーム', choices=team_choice)
     handed = models.CharField(max_length=2, verbose_name='席', choices=dominant_choice)
     plate_appearances = models.IntegerField(verbose_name='打席')
+    at_bats = models.IntegerField(verbose_name='打数') # 追加
     runs = models.IntegerField(verbose_name='得点')    
     hits = models.IntegerField(verbose_name='安打')
     hits2 = models.IntegerField(verbose_name='二塁打')
@@ -47,6 +48,12 @@ class Batting(models.Model):
     hits_by_pitch = models.IntegerField(verbose_name='死球')
     strike_outs = models.IntegerField(verbose_name='三振')
     double_plays = models.IntegerField(verbose_name='併殺打')
+    batting_average = models.FloatField(verbose_name='打率') # 追加
+    on_base_percentage = models.FloatField(verbose_name='出塁率') # 追加
+    slugging_percentage = models.FloatField(verbose_name='長打率') # 追加
+    ops = models.FloatField(verbose_name='OPS') # 追加
+    stolen_bases_percentage = models.FloatField(verbose_name='盗塁成功率') # 追加
+    year = models.IntegerField(verbose_name='年度') # 追加
 
     
     def __str__(self):
@@ -64,16 +71,19 @@ class Pitching(models.Model):
     handed = models.CharField(max_length=2, verbose_name='投', choices=dominant_choice)
     name = models.CharField(max_length=255, verbose_name='名前')
     games = models.IntegerField(verbose_name='登板')
+    earned_run_average = models.FloatField(verbose_name='防御率') # 追加
     wins = models.IntegerField(verbose_name='勝利')
-    loses = models.IntegerField(verbose_name='敗北')
+    loses = models.IntegerField(verbose_name='敗戦')
     saves = models.IntegerField(verbose_name='セーブ')
     holds = models.IntegerField(verbose_name='ホールド')
     # hps = models.IntegerField(verbose_name='HP')
     completes = models.IntegerField(verbose_name='完投')
     shut_out_wins = models.IntegerField(verbose_name='完封')
     no_BB_completes = models.IntegerField(verbose_name='無四球')
+    winning_percentage = models.FloatField(verbose_name='勝率') # 追加
     batters_faced = models.IntegerField(verbose_name='対戦打者')
     outs = models.IntegerField(verbose_name='獲得アウト')
+    innings = models.FloatField(verbose_name='イニング') # 追加
     hits = models.IntegerField(verbose_name='被安打')
     homeruns = models.IntegerField(verbose_name='被本塁打')
     bases_on_balls = models.IntegerField(verbose_name='与四球')
@@ -84,7 +94,7 @@ class Pitching(models.Model):
     balks = models.IntegerField(verbose_name='ボーク')
     runs = models.IntegerField(verbose_name='失点')
     earned_runs = models.IntegerField(verbose_name='自責点')
-
+    year = models.IntegerField(verbose_name='年度') # 追加
 
     def __str__(self):
         return self.name
@@ -107,7 +117,8 @@ class Fielding(models.Model):
     errors = models.IntegerField(verbose_name='失策')
     double_plays = models.IntegerField(verbose_name='併殺')
     passed_balls = models.IntegerField(verbose_name='捕逸', null=True, default=0)
-
+    fielding_average = models.FloatField(verbose_name='守備率') # 追加
+    year = models.IntegerField(verbose_name='年度') # 追加
 
     def __str__(self):
         return self.name
@@ -119,8 +130,7 @@ from .create_database import create_Batting_Database, create_Pitching_Database, 
 
 '''
 以下，makemigrations，migrate時にはコメントアウト
-runserverの際は以下が三回ずつ実行されてしまう
-読み込まれるviewの数だけmodels.pyも実行される？
+再度migrateし，runserverしてください。
 '''
 # スクレイピング実行(打者)
 # create_Batting_Database()
