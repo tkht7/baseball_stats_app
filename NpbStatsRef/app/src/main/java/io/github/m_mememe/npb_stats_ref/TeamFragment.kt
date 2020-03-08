@@ -138,8 +138,8 @@ class TeamFragment : Fragment() {
             dataItem2.setText("左\n右")
             dataItem3.setText("防\n御\n率")
             dataItem4.setText("勝\n利")
-            dataItem5.setText("敗\n北")
-            dataItem6.setText("投\n球\n回")
+            dataItem5.setText("敗\n戦")
+            dataItem6.setText("イ\nニ\nン\nグ")
         }
         else if(args.statsType == "fielding"){
             dataItem2.setText("守\n備\n位\n置")
@@ -154,7 +154,10 @@ class TeamFragment : Fragment() {
     }
 
     fun onClickData(tappedView: View, rowData: RowData) {
-        Snackbar.make(tappedView, "${rowData.name}の個人ページに飛ぶ", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        //Snackbar.make(tappedView, "${rowData.name}の個人ページに飛ぶ", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        // 選手一覧から選手詳細ページへ
+        val action = TeamFragmentDirections.actionNavTeamToNavIndividual(args.teamId, args.statsType, rowData.name)
+        findNavController().navigate(action)
     }
 
     //非同期処理でHTTP GETを実行
@@ -201,38 +204,10 @@ class TeamFragment : Fragment() {
                 stats.name = res.asObject().get("name").asString()
                 stats.data1 = res.asObject().get("games").toString() // 試合数
                 stats.data2 = res.asObject().get("handed").toString().replace("\"", "") // 左右
+                stats.data3 = res.asObject().get("batting_average").toString().replace("\"", "") // 打率
                 stats.data4 = res.asObject().get("homeruns").toString() // 本塁打
                 stats.data5 = res.asObject().get("runs_batted_in").toString() // 打点
-                var hits = res.asObject().get("hits").toString().toInt() // 安打
-                if (hits == 0) {
-                    stats.data3 = ".000"
-                    stats.data6 = ".000"
-                }
-                else{
-                    var plate_appearances = res.asObject().get("plate_appearances").toString().toInt() // 打席数
-                    var bases_on_balls = res.asObject().get("bases_on_balls").toString().toInt() // 四球
-                    var hits_by_pitch = res.asObject().get("hits_by_pitch").toString().toInt() // 死球
-                    var sacrifice_hits = res.asObject().get("sacrifice_hits").toString().toInt() // 犠打
-                    var sacrifice_flies = res.asObject().get("sacrifice_flies").toString().toInt() // 犠飛
-                    var at_bat = plate_appearances.toFloat() - (bases_on_balls + hits_by_pitch + sacrifice_hits + sacrifice_flies).toFloat() // 打数
-
-                    var on_base_percentage = (hits + bases_on_balls + hits_by_pitch).toFloat() / (plate_appearances - sacrifice_hits).toFloat() // 出塁率
-                    var hits2 = res.asObject().get("hits2").toString().toInt() // 二塁打
-                    var hits3 = res.asObject().get("hits3").toString().toInt() // 三塁打
-                    var homeruns = res.asObject().get("homeruns").toString().toInt() // 本塁打
-                    var total_bases = hits + hits2 + hits3 + homeruns // 塁打
-                    var slugging_percentage = total_bases.toFloat() / at_bat // 長打率
-                    var battingAverage = hits.toFloat() / at_bat // 打率
-                    var OPS = on_base_percentage + slugging_percentage // OPS
-                    if (battingAverage < 1.0f)
-                        stats.data3 = "." + (kotlin.math.round(battingAverage * 1000.0f)).toInt().toString() // 打率
-                    else
-                        stats.data3 = "1.000" // 打率
-                    if (OPS < 1.0f)
-                        stats.data6 = "." + (kotlin.math.round(OPS * 1000.0f)).toInt().toString() // OPS
-                    else
-                        stats.data6 = String.format("%.3f", OPS) // OPS
-                }
+                stats.data6 = res.asObject().get("ops").toString().replace("\"", "") // OPS
             }
             dataList.add(data)
         }
@@ -246,19 +221,10 @@ class TeamFragment : Fragment() {
                 stats.name = res.asObject().get("name").asString()
                 stats.data1 = res.asObject().get("games").toString() // 試合数
                 stats.data2 = res.asObject().get("handed").toString().replace("\"", "") // 左右
+                stats.data3 = res.asObject().get("earned_run_average").toString().replace("\"", "") // 防御率
                 stats.data4 = res.asObject().get("wins").toString() // 勝利
-                stats.data5 = res.asObject().get("loses").toString() // 敗北
-                var outs = res.asObject().get("outs").toString().toInt() // アウト
-                var inning = (outs / 3).toFloat() + (outs % 3).toFloat() * 0.1 // 投球回
-                stats.data6 = String.format("%.1f", inning) // 投球回
-                if (outs == 0) {
-                    stats.data3 = "-" // 防御率
-                }
-                else{
-                    var earned_runs = res.asObject().get("earned_runs").toString().toInt() // 自責点
-                    var earned_run_average = (earned_runs * 9 * 3).toFloat() / outs.toFloat() // 防御率
-                    stats.data3 = String.format("%.2f", earned_run_average) // 防御率
-                }
+                stats.data5 = res.asObject().get("loses").toString() // 敗戦
+                stats.data6 = res.asObject().get("innings").toString() // イニング
             }
             dataList.add(data)
         }
@@ -273,15 +239,7 @@ class TeamFragment : Fragment() {
                 stats.data1 = res.asObject().get("games").toString() // 試合数
                 stats.data2 = res.asObject().get("position").toString() // .replace("\"", "") // 守備位置
                 stats.data3 = res.asObject().get("errors").toString() // 失策
-                var put_outs = res.asObject().get("put_outs").toString().toInt() // 刺殺
-                var assists = res.asObject().get("assists").toString().toInt() // 補殺
-                var errors = res.asObject().get("errors").toString().toInt() // 失策
-                var defense_ratio = (put_outs + assists).toFloat() / (put_outs + assists + errors) // 守備率
-                if (defense_ratio < 1.0f)
-                    stats.data4 = "." + (kotlin.math.round(defense_ratio * 1000.0f)).toInt().toString() // 守備率
-                else
-                    stats.data4 = "1.000" // 守備率
-
+                stats.data4 = res.asObject().get("fielding_average").toString().replace("\"", "") // 守備率
             }
             dataList.add(data)
         }
