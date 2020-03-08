@@ -6,6 +6,44 @@ from bs4 import BeautifulSoup
 import time
 
 
+# 四捨五入用の関数
+def custom_round(num, ndigits=0):
+    if type(num) == int:
+        return num
+
+    d_point = len(str(num).split('.')[1])
+    
+    if ndigits >= d_point:
+        return num
+
+    c = (10 ** d_point) * 2
+
+    return round((num * c + 1) / c, ndigits)
+
+
+# 小数を入力して.???の形に丸めて出力する関数
+def round_str(rate):
+    rounded = custom_round(rate, 3)
+    out = str(rounded)
+    if float(out) >= 1:
+        if len(out) == 1:
+            return out + '.000'
+        elif len(out) == 3:
+            return out + '00'
+        elif len(out) == 4:
+            return out + '0'
+        else:
+            return out
+    elif out == '0':
+        return '-'
+    elif len(out) == 3:
+        return out[1:] + '00'
+    elif len(out) == 4:
+        return out[1:] + '0'
+    else:
+        return out[1:]
+
+
 # スクレイピング（Batting）
 def create_Batting_Database():
     # 初期化
@@ -56,7 +94,7 @@ def create_Batting_Database():
             at_bats = result[3] - walks - result[12] - result[13]
             # 打率
             if at_bats != 0:
-                batting_average = result[5] / at_bats
+                batting_average = result[5] / at_bats  
             else:
                 batting_average = 0
 
@@ -72,13 +110,20 @@ def create_Batting_Database():
                 slugging_percentage = (single + 2*result[6] + 3*result[7] + 4*result[8]) / at_bats
             else:
                 slugging_percentage = 0
-            # OPS
-            ops = on_base_percentage + slugging_percentage
+            # ops
+            ops = custom_round(on_base_percentage, 3) + custom_round(slugging_percentage, 3)
             # 盗塁成功率
             if result[10] + result[11] != 0:
                 stolen_bases_percentage = result[10] / (result[10] + result[11])
             else:
                 stolen_bases_percentage = 0
+
+            # 率を.???の形に直す
+            batting_average = round_str(batting_average)
+            on_base_percentage = round_str(on_base_percentage)
+            slugging_percentage = round_str(slugging_percentage)
+            ops = round_str(ops)
+            stolen_bases_percentage = round_str(stolen_bases_percentage)
 
             # print(result)
             b = Batting(team = team_token,
@@ -172,6 +217,10 @@ def create_Pitching_Database():
                 winning_percentage = result[3] / (result[3] + result[4])
             else:
                 winning_percentage = 0
+
+            # 率を.???の形に直す
+            earned_run_average = round_str(earned_run_average)
+            winning_percentage = round_str(winning_percentage)
 
             # print(result)
             b = Pitching(team = team_token,
@@ -269,6 +318,9 @@ def create_Fielding_Database():
                 fielding_average = (result[3] + result[4]) / (result[3] + result[4] + result[5])
             else:
                 fielding_average = 0
+
+            # 率を.???の形に直す
+            fielding_average = round_str(fielding_average)
             
             b = Fielding(team = team_token,
                          name = result[1],

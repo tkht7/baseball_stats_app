@@ -48,11 +48,11 @@ class Batting(models.Model):
     hits_by_pitch = models.IntegerField(verbose_name='死球')
     strike_outs = models.IntegerField(verbose_name='三振')
     double_plays = models.IntegerField(verbose_name='併殺打')
-    batting_average = models.FloatField(verbose_name='打率') # 追加
-    on_base_percentage = models.FloatField(verbose_name='出塁率') # 追加
-    slugging_percentage = models.FloatField(verbose_name='長打率') # 追加
-    ops = models.FloatField(verbose_name='OPS') # 追加
-    stolen_bases_percentage = models.FloatField(verbose_name='盗塁成功率') # 追加
+    batting_average = models.CharField(max_length=255, verbose_name='打率') # 追加
+    on_base_percentage = models.CharField(max_length=255, verbose_name='出塁率') # 追加
+    slugging_percentage = models.CharField(max_length=255, verbose_name='長打率') # 追加
+    ops = models.CharField(max_length=255, verbose_name='OPS') # 追加
+    stolen_bases_percentage = models.CharField(max_length=255, verbose_name='盗塁成功率') # 追加
     year = models.IntegerField(verbose_name='年度') # 追加
 
     
@@ -71,7 +71,7 @@ class Pitching(models.Model):
     handed = models.CharField(max_length=2, verbose_name='投', choices=dominant_choice)
     name = models.CharField(max_length=255, verbose_name='名前')
     games = models.IntegerField(verbose_name='登板')
-    earned_run_average = models.FloatField(verbose_name='防御率') # 追加
+    earned_run_average = models.CharField(max_length=255, verbose_name='防御率') # 追加
     wins = models.IntegerField(verbose_name='勝利')
     loses = models.IntegerField(verbose_name='敗戦')
     saves = models.IntegerField(verbose_name='セーブ')
@@ -80,7 +80,7 @@ class Pitching(models.Model):
     completes = models.IntegerField(verbose_name='完投')
     shut_out_wins = models.IntegerField(verbose_name='完封')
     no_BB_completes = models.IntegerField(verbose_name='無四球')
-    winning_percentage = models.FloatField(verbose_name='勝率') # 追加
+    winning_percentage = models.CharField(max_length=255, verbose_name='勝率') # 追加
     batters_faced = models.IntegerField(verbose_name='対戦打者')
     outs = models.IntegerField(verbose_name='獲得アウト')
     innings = models.FloatField(verbose_name='イニング') # 追加
@@ -117,7 +117,7 @@ class Fielding(models.Model):
     errors = models.IntegerField(verbose_name='失策')
     double_plays = models.IntegerField(verbose_name='併殺')
     passed_balls = models.IntegerField(verbose_name='捕逸', null=True, default=0)
-    fielding_average = models.FloatField(verbose_name='守備率') # 追加
+    fielding_average = models.CharField(max_length=255, verbose_name='守備率') # 追加
     year = models.IntegerField(verbose_name='年度') # 追加
 
     def __str__(self):
@@ -129,15 +129,12 @@ from .create_database import create_Batting_Database, create_Pitching_Database, 
 
 
 '''
-以下，makemigrations，migrate時にはコメントアウト
-再度migrateし，runserverしてください。
+以下は、makemigrations、migrateをしてから
+コメントアウトを外し、再度migrateを行った後に
+コメントアウトをし直してrunserverを行う
 '''
-# スクレイピング実行(打者)
+# スクレイピング実行(打者)(投手)(守備)
 # create_Batting_Database()
-
-# スクレイピング実行(投手)
 # create_Pitching_Database()
-
-# スクレイピング実行(守備)
 # create_Fielding_Database()
 
