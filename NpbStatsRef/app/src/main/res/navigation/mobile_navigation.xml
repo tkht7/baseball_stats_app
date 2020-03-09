@@ -27,6 +27,29 @@
             app:argType="string" />
         <action
             android:id="@+id/action_nav_team_to_nav_team"
-            app:destination="@id/nav_team" />
+            app:destination="@id/nav_team" >
+        </action>
+        <action
+            android:id="@+id/action_nav_team_to_nav_individual"
+            app:destination="@id/nav_individual" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_individual"
+        android:name="io.github.m_mememe.npb_stats_ref.IndividualFragment"
+        android:label="@string/menu_individual"
+        tools:layout="@layout/fragment_individual">
+        <argument
+            android:name="teamId"
+            app:argType="string" />
+        <argument
+            android:name="statsType"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_nav_individual_to_nav_individual"
+            app:destination="@id/nav_individual" />
     </fragment>
 </navigation>

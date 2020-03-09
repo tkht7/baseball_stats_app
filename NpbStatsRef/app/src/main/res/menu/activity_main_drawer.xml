@@ -8,9 +8,14 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_launcher_foreground"
             android:title="@string/menu_top" />
-        <item
-            android:id="@+id/nav_team"
-            android:icon="@drawable/ic_launcher_foreground"
-            android:title="@string/menu_team" />
     </group>
+
+    <item android:title="Team">
+        <menu>
+            <item
+                android:id="@+id/nav_team"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="@string/menu_team" />
+        </menu>
+    </item>
 </menu>
