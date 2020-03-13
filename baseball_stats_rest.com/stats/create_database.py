@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import time
 
 
+# 以下文字列で投げるときに用いていた関数
 # 四捨五入用の関数
 def custom_round(num, ndigits=0):
     if type(num) == int:
@@ -42,6 +43,18 @@ def round_str(rate):
         return out[1:] + '0'
     else:
         return out[1:]
+
+# 防御率用の整形関数
+def round_era(rate):
+    rounded = custom_round(rate, 2)
+    out = str(rounded)
+    if len(out) == 3:
+        return out + '0'
+    elif out == '0':
+        return '-'
+    else:
+        return out
+
 
 
 # スクレイピング（Batting）
@@ -111,19 +124,22 @@ def create_Batting_Database():
             else:
                 slugging_percentage = 0
             # ops
-            ops = custom_round(on_base_percentage, 3) + custom_round(slugging_percentage, 3)
+            ops = on_base_percentage + slugging_percentage
             # 盗塁成功率
             if result[10] + result[11] != 0:
                 stolen_bases_percentage = result[10] / (result[10] + result[11])
             else:
                 stolen_bases_percentage = 0
 
+            
             # 率を.???の形に直す
             batting_average = round_str(batting_average)
             on_base_percentage = round_str(on_base_percentage)
             slugging_percentage = round_str(slugging_percentage)
             ops = round_str(ops)
             stolen_bases_percentage = round_str(stolen_bases_percentage)
+            
+
 
             # print(result)
             b = Batting(team = team_token,
@@ -218,9 +234,13 @@ def create_Pitching_Database():
             else:
                 winning_percentage = 0
 
+
+            
             # 率を.???の形に直す
-            earned_run_average = round_str(earned_run_average)
-            winning_percentage = round_str(winning_percentage)
+            earned_run_average_f = earned_run_average
+            earned_run_average_c = round_era(earned_run_average) # ここだけ小数第二位まで表示
+            winning_percentage = round_str(winning_percentage) 
+            
 
             # print(result)
             b = Pitching(team = team_token,
@@ -248,7 +268,8 @@ def create_Pitching_Database():
                         runs = result[22],
                         earned_runs = result[23],
                         innings = innings,
-                        earned_run_average = earned_run_average,
+                        earned_run_average_f = earned_run_average_f,
+                        earned_run_average_c = earned_run_average_c,
                         winning_percentage = winning_percentage,
                         year = 2019
             )
@@ -319,9 +340,12 @@ def create_Fielding_Database():
             else:
                 fielding_average = 0
 
+
+            
             # 率を.???の形に直す
             fielding_average = round_str(fielding_average)
             
+
             b = Fielding(team = team_token,
                          name = result[1],
                          handed = result[0],
