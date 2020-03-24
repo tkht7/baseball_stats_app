@@ -8,14 +8,22 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_launcher_foreground"
             android:title="@string/menu_top" />
+        <item
+            android:id="@+id/nav_team"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="@string/menu_team" />
+        <item
+            android:id="@+id/nav_ranking_top"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="@string/menu_ranking_top" />
     </group>
 
-    <item android:title="Team">
-        <menu>
-            <item
-                android:id="@+id/nav_team"
-                android:icon="@drawable/ic_launcher_foreground"
-                android:title="@string/menu_team" />
-        </menu>
-    </item>
+<!--    <item android:title="Team">-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_team"-->
+<!--                android:icon="@drawable/ic_launcher_foreground"-->
+<!--                android:title="@string/menu_team" />-->
+<!--        </menu>-->
+<!--    </item>-->
 </menu>

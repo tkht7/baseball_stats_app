@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-class RecyclerAdapter(private val list:List<RowData>, private val listener: ListListener) : RecyclerView.Adapter<RecyclerViewHolder>() {
+class TeamRecyclerAdapter(private val list:List<TeamData>, private val listener: ListListener) : RecyclerView.Adapter<TeamRecyclerViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamRecyclerViewHolder {
         val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.list, parent, false)
-        return RecyclerViewHolder(rowView)
+        return TeamRecyclerViewHolder(rowView)
     }
 
-    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TeamRecyclerViewHolder, position: Int) {
         holder.nameTextView.text = list[position].name
         holder.textView1.text = list[position].data1
         holder.textView2.text = list[position].data2
@@ -31,7 +31,7 @@ class RecyclerAdapter(private val list:List<RowData>, private val listener: List
     }
 
     interface ListListener {
-        fun onClickData(tappedView: View, rowData: RowData)
+        fun onClickData(tappedView: View, rowData: TeamData)
     }
 
 }

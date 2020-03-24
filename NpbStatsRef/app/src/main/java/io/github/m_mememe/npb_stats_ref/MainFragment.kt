@@ -19,59 +19,10 @@ class MainFragment : Fragment() {
     val paNum = 6
     val seNum = 6
 
-    val leagueLogo = listOf(
-        // パ・リーグ
-        R.drawable.lions,
-        R.drawable.hawks,
-        R.drawable.eagles,
-        R.drawable.marines,
-        R.drawable.fighters,
-        R.drawable.buffaloes,
-        // セ・リーグ
-        R.drawable.giants,
-        R.drawable.baystars,
-        R.drawable.tigers,
-        R.drawable.carp,
-        R.drawable.dragons,
-        R.drawable.swallows
-    )
-
-    val leagueId = listOf(
-        // パ・リーグ
-        R.string.lions,
-        R.string.hawks,
-        R.string.eagles,
-        R.string.marines,
-        R.string.fighters,
-        R.string.buffaloes,
-        // セ・リーグ
-        R.string.giants,
-        R.string.baystars,
-        R.string.tigers,
-        R.string.carp,
-        R.string.dragons,
-        R.string.swallows
-    )
-
-    private val teamList = listOf<String>(
-        "L",        //西武ライオンズ
-        "H",        //ソフトバンク
-        "E",       //楽天
-        "M",      //千葉ロッテ
-        "F",     //日本ハム
-        "B",    //オリックス
-        "G",       //ジャイアンツ
-        "DB",     //DeNA
-        "T",       //阪神
-        "C",         //カープ
-        "D",      //中日
-        "S"      //ヤクルト
-    )
-    private val statsTypeList = listOf(
-        "batting",
-        "pitching",
-        "fielding"
-    )
+    private val leagueLogo = ItemManagement().leagueLogo
+    private val leagueId = ItemManagement().leagueId
+    private val teamList = ItemManagement().teamList
+    private val statsTypeList = ItemManagement().statsTypeList
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

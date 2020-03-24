@@ -77,7 +77,7 @@ class Pitching(models.Model):
     name = models.CharField(max_length=255, verbose_name='名前')
     games = models.IntegerField(verbose_name='登板')
     earned_run_average_f = models.FloatField(verbose_name='防御率_f')
-    earned_run_average_c = models.CharField(max_length=255, verbose_name='防御率_c')
+    earned_run_average = models.CharField(max_length=255, verbose_name='防御率_c')
     wins = models.IntegerField(verbose_name='勝利')
     loses = models.IntegerField(verbose_name='敗戦')
     saves = models.IntegerField(verbose_name='セーブ')

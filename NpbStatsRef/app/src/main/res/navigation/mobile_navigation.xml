@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_team"
             app:destination="@id/nav_team" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_ranking_top"
+            app:destination="@id/nav_ranking_top" />
     </fragment>
 
     <fragment
@@ -21,14 +24,15 @@
         tools:layout="@layout/fragment_team">
         <argument
             android:name="teamId"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="L" />
         <argument
             android:name="statsType"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="batting" />
         <action
-            android:id="@+id/action_nav_team_to_nav_team"
-            app:destination="@id/nav_team" >
-        </action>
+            android:id="@+id/action_nav_team_self"
+            app:destination="@id/nav_team" />
         <action
             android:id="@+id/action_nav_team_to_nav_individual"
             app:destination="@id/nav_individual" />
@@ -49,7 +53,65 @@
             android:name="name"
             app:argType="string" />
         <action
-            android:id="@+id/action_nav_individual_to_nav_individual"
+            android:id="@+id/action_nav_individual_self"
             app:destination="@id/nav_individual" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_ranking_top"
+        android:name="io.github.m_mememe.npb_stats_ref.RankingTopFragment"
+        android:label="@string/menu_ranking_top"
+        tools:layout="@layout/fragment_ranking_top">
+        <argument
+            android:name="teamId"
+            app:argType="string"
+            android:defaultValue="all" />
+        <argument
+            android:name="statsType"
+            app:argType="string"
+            android:defaultValue="batting" />
+        <argument
+            android:name="regularBat"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="order"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_nav_ranking_top_to_nav_ranking_list"
+            app:destination="@id/nav_ranking_list" />
+        <action
+            android:id="@+id/action_nav_ranking_top_self"
+            app:destination="@id/nav_ranking_top" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_ranking_list"
+        android:name="io.github.m_mememe.npb_stats_ref.RankingListFragment"
+        android:label="@string/menu_ranking_list"
+        tools:layout="@layout/fragment_ranking_list">
+        <argument
+            android:name="teamId"
+            app:argType="string" />
+        <argument
+            android:name="statsType"
+            app:argType="string" />
+        <argument
+            android:name="stats"
+            app:argType="string" />
+        <argument
+            android:name="regularBat"
+            app:argType="boolean"/>
+        <argument
+            android:name="order"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_nav_ranking_list_to_nav_individual"
+            app:destination="@id/nav_individual" />
+        <action
+            android:id="@+id/action_nav_ranking_list_self"
+            app:destination="@id/nav_ranking_list" />
+    </fragment>
+
 </navigation>

@@ -1,6 +1,6 @@
 package io.github.m_mememe.npb_stats_ref
 
-class IndividualDataForm {
+class IndividualData {
     var item1: String = ""
     var stats1: String = ""
     var item2: String = ""

@@ -25,9 +25,10 @@
     <string name="action_settings">Settings</string>
 
     <!-- それぞれのフラグメントにおいてアプリの上の方に表示される文字-->
-    <string name="menu_top">Top</string>
-    <string name="menu_team">Team</string>
-    <string name="menu_individual">Individual</string>
-
+    <string name="menu_top">トップ</string>
+    <string name="menu_team">チーム</string>
+    <string name="menu_individual">個人</string>
+    <string name="menu_ranking_top">ランキング</string>
+    <string name="menu_ranking_list">ランキング</string>
 
 </resources>

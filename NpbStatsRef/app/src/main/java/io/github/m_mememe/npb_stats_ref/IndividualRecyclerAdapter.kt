@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-class IndividualRecyclerAdapter(private val list:List<IndividualDataForm>, private val listener: ListListener) : RecyclerView.Adapter<IndividualRecyclerViewHolder>() {
+class IndividualRecyclerAdapter(private val list:List<IndividualData>, private val listener: ListListener) : RecyclerView.Adapter<IndividualRecyclerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndividualRecyclerViewHolder {
         val individualView: View = LayoutInflater.from(parent.context).inflate(R.layout.list_individual, parent, false)
@@ -30,7 +30,7 @@ class IndividualRecyclerAdapter(private val list:List<IndividualDataForm>, priva
     }
 
     interface ListListener {
-        fun onClickData(tappedView: View, dataForm: IndividualDataForm)
+        fun onClickData(tappedView: View, dataForm: IndividualData)
     }
 
 }

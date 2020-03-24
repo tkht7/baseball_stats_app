@@ -26,32 +26,12 @@ class TeamFragment : Fragment() {
     // 画面遷移時の引数受け取り
     private val args: TeamFragmentArgs by navArgs()
 
-    private val leagueId = MainFragment().leagueId
-    private val leagueLogo = MainFragment().leagueLogo
-    private val teamList = listOf<String>(
-        "L",        //西武ライオンズ
-        "H",        //ソフトバンク
-        "E",       //楽天
-        "M",      //千葉ロッテ
-        "F",     //日本ハム
-        "B",    //オリックス
-        "G",       //ジャイアンツ
-        "DB",     //DeNA
-        "T",       //阪神
-        "C",         //カープ
-        "D",      //中日
-        "S"      //ヤクルト
-    )
-    private val statsTypeList = listOf(
-        "batting",
-        "pitching",
-        "fielding"
-    )
-    private val statsTypeList2 = listOf(
-        "打撃成績",
-        "投手成績",
-        "守備成績"
-    )
+    private val leagueId = ItemManagement().leagueId
+    private val leagueLogo = ItemManagement().leagueLogo
+    private val teamList = ItemManagement().teamList
+    private val teamList2 = ItemManagement().teamList2
+    private val statsTypeList = ItemManagement().statsTypeList
+    private val statsTypeList2 = ItemManagement().statsTypeList2
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -76,6 +56,18 @@ class TeamFragment : Fragment() {
         val imageView: ImageView = view.findViewById(R.id.teamLogo)
         imageView.setImageDrawable(getDrawable(view.context, leagueLogo[teamIndex]))
 
+        // spinner(チームの項目)
+        val teamSpinner: Spinner = view.findViewById(R.id.teamSpinner)
+        val teamAdapter = ArrayAdapter(
+            view.context,
+            android.R.layout.simple_spinner_item,
+            teamList2
+        )
+        teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        teamSpinner.adapter = teamAdapter
+        // spinner変更でfragment遷移するのでspinnerの中身をここでセット
+        teamSpinner.setSelection(teamIndex)
+
         // spinner(打・投・守の項目)
         val statsTypeSpinner: Spinner = view.findViewById(R.id.statsTypeSpinner)
         val statsTypeAdapter = ArrayAdapter(
@@ -85,12 +77,39 @@ class TeamFragment : Fragment() {
         )
         statsTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         statsTypeSpinner.adapter = statsTypeAdapter
-
         // spinner変更でfragment遷移するのでspinnerの中身をここでセット
-        val statsIndex = statsTypeList.indexOf(args.statsType)
-        statsTypeSpinner.setSelection(statsIndex)
+        var statsTypeIndex = statsTypeList.indexOf(args.statsType)
+        statsTypeSpinner.setSelection(statsTypeIndex)
 
-        // spinnerの項目選択時呼び出し
+        // teamSpinnerの項目選択時呼び出し
+        teamSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                // 初回起動時の動作を抑制して無限呼び出しを防ぐ
+                if (teamSpinner.isFocusable() == false) {
+                    teamSpinner.setFocusable(true)
+                    return
+                }
+
+                // positionは選んだ位置のインデックス
+                teamIndex = position
+
+                // フラグメント遷移 positionは選んだ位置のインデックス
+                val action = TeamFragmentDirections.actionNavTeamSelf(teamList[teamIndex], statsTypeList[statsTypeIndex])
+                findNavController().navigate(action)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // 選ばなかった時の動作
+            }
+        }
+        // 初回起動時の動作を抑制して無限呼び出しを防ぐ
+        teamSpinner.setFocusable(false)
+
+        // statsTypeSpinnerの項目選択時呼び出し
         statsTypeSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -104,11 +123,11 @@ class TeamFragment : Fragment() {
                     return
                 }
 
-                // 選んだ位置のインデックス
-                var statsTypeIndex = position
+                // positionは選んだ位置のインデックス
+                statsTypeIndex = position
 
-                // フラグメント遷移
-                val action = TeamFragmentDirections.actionNavTeamToNavTeam(args.teamId, statsTypeList[statsTypeIndex])
+                // フラグメント遷移 positionは選んだ位置のインデックス
+                val action = TeamFragmentDirections.actionNavTeamSelf(teamList[teamIndex], statsTypeList[statsTypeIndex])
                 findNavController().navigate(action)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -153,10 +172,10 @@ class TeamFragment : Fragment() {
         onParallelGetInfo(args.teamId, args.statsType, recyclerView)
     }
 
-    fun onClickData(tappedView: View, rowData: RowData) {
+    fun onClickData(tappedView: View, teamData: TeamData) {
         //Snackbar.make(tappedView, "${rowData.name}の個人ページに飛ぶ", Snackbar.LENGTH_LONG).setAction("Action", null).show()
         // 選手一覧から選手詳細ページへ
-        val action = TeamFragmentDirections.actionNavTeamToNavIndividual(args.teamId, args.statsType, rowData.name)
+        val action = TeamFragmentDirections.actionNavTeamToNavIndividual(args.teamId, args.statsType, teamData.name)
         findNavController().navigate(action)
     }
 
@@ -164,7 +183,7 @@ class TeamFragment : Fragment() {
     fun onParallelGetInfo(teamId: String?, statsType: String?, recyclerView: RecyclerView) = GlobalScope.launch(Dispatchers.Main) {
         val http = HttpUtil()
         var URL = "http://10.0.2.2:8000/api/$statsType/?team=$teamId" //ローカルホスト
-        val dataList = mutableListOf<RowData>()
+        val dataList = mutableListOf<TeamData>()
         do {
             async(Dispatchers.Default) {
                 var body = http.httpGET1(URL)
@@ -185,9 +204,9 @@ class TeamFragment : Fragment() {
         }while(URL != "null")
 
 
-        viewAdapter = RecyclerAdapter(dataList, object : RecyclerAdapter.ListListener{
-            override fun onClickData(tappedView: View, rowData: RowData) {
-                this@TeamFragment.onClickData(tappedView, rowData)
+        viewAdapter = TeamRecyclerAdapter(dataList, object : TeamRecyclerAdapter.ListListener{
+            override fun onClickData(tappedView: View, teamData: TeamData) {
+                this@TeamFragment.onClickData(tappedView, teamData)
             }
         })
         viewManager = LinearLayoutManager(activity)
@@ -197,10 +216,10 @@ class TeamFragment : Fragment() {
 
     }
 
-    fun battingDataProcess(result:JsonArray): MutableList<RowData>{
-        val dataList = mutableListOf<RowData>()
+    fun battingDataProcess(result:JsonArray): MutableList<TeamData>{
+        val dataList = mutableListOf<TeamData>()
         for (res in result) {
-            val data: RowData = RowData().also {stats ->
+            val data: TeamData = TeamData().also {stats ->
                 stats.name = res.asObject().get("name").asString()
                 stats.data1 = res.asObject().get("games").toString() // 試合数
                 stats.data2 = res.asObject().get("handed").toString().replace("\"", "") // 左右
@@ -214,10 +233,10 @@ class TeamFragment : Fragment() {
         return dataList
     }
 
-    fun pitchingDataProcess(result:JsonArray): MutableList<RowData>{
-        val dataList = mutableListOf<RowData>()
+    fun pitchingDataProcess(result:JsonArray): MutableList<TeamData>{
+        val dataList = mutableListOf<TeamData>()
         for (res in result) {
-            val data: RowData = RowData().also {stats ->
+            val data: TeamData = TeamData().also {stats ->
                 stats.name = res.asObject().get("name").asString()
                 stats.data1 = res.asObject().get("games").toString() // 試合数
                 stats.data2 = res.asObject().get("handed").toString().replace("\"", "") // 左右
@@ -231,10 +250,10 @@ class TeamFragment : Fragment() {
         return dataList
     }
 
-    fun fieldingDataProcess(result:JsonArray): MutableList<RowData>{
-        val dataList = mutableListOf<RowData>()
+    fun fieldingDataProcess(result:JsonArray): MutableList<TeamData>{
+        val dataList = mutableListOf<TeamData>()
         for (res in result) {
-            val data: RowData = RowData().also {stats ->
+            val data: TeamData = TeamData().also {stats ->
                 stats.name = res.asObject().get("name").asString()
                 stats.data1 = res.asObject().get("games").toString() // 試合数
                 stats.data2 = res.asObject().get("position").toString() // .replace("\"", "") // 守備位置
