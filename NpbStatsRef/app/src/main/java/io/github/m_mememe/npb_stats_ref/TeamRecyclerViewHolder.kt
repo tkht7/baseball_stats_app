@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
+class TeamRecyclerViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
 
     val nameTextView: TextView = itemview.findViewById(R.id.name)
     val textView1: TextView = itemview.findViewById(R.id.data1)

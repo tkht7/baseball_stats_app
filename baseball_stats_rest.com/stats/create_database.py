@@ -48,12 +48,15 @@ def round_str(rate):
 def round_era(rate):
     rounded = custom_round(rate, 2)
     out = str(rounded)
-    if len(out) == 3:
-        return out + '0'
-    elif out == '0':
+    
+    if out == '0':
         return '-'
     else:
-        return out
+        d_point = len(out.split('.')[1])
+        if d_point == 1:
+            return out + '0'
+        else:
+            return out
 
 
 
@@ -238,7 +241,7 @@ def create_Pitching_Database():
             
             # 率を.???の形に直す
             earned_run_average_f = earned_run_average
-            earned_run_average_c = round_era(earned_run_average) # ここだけ小数第二位まで表示
+            earned_run_average = round_era(earned_run_average) # ここだけ小数第二位まで表示
             winning_percentage = round_str(winning_percentage) 
             
 
@@ -269,7 +272,7 @@ def create_Pitching_Database():
                         earned_runs = result[23],
                         innings = innings,
                         earned_run_average_f = earned_run_average_f,
-                        earned_run_average_c = earned_run_average_c,
+                        earned_run_average = earned_run_average,
                         winning_percentage = winning_percentage,
                         year = 2019
             )

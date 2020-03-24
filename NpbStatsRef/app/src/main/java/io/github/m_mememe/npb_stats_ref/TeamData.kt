@@ -1,6 +1,6 @@
 package io.github.m_mememe.npb_stats_ref
 
-class RowData {
+class TeamData {
     var name: String = ""
     var data1: String = ""
     var data2: String = ""
